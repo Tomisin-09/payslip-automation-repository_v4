@@ -20,6 +20,10 @@ The system is **configuration-driven**, **auditable**, and designed so non-devel
 7. Optionally emails payslips using **Outlook Desktop**
 
 ---
+## Prerequisites
+You need to have Python installed on your system. Go to https://www.python.org/downloads/ to get the latest version 
+
+---
 
 ## Key design goals
 
@@ -68,6 +72,7 @@ payslip-automation/
 │
 ├─ run.ps1
 ├─ run.bat
+├─ run.sh
 ├─ requirements.txt
 └─ README.md
 ```
