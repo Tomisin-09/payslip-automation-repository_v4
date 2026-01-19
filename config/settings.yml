@@ -1,0 +1,81 @@
+run:
+  period_mode: "manual"
+  manual_period:
+    year: 2026
+    month: 1
+  reference_date: ""
+  fail_fast: false
+  approval_gate_before_email: true
+
+company:
+  line1: "NTS AFRICA SERVICES LIMITED"
+  line2: "Employee Pay Slip"
+  currency_symbol: "NGN "
+
+data:
+  data_source_xlsx: "data/Master_NTS_Payslip_v01.xlsx"
+  sheet_name: "Data Source"
+  required_base_columns:
+    - Reference Number
+    - Employee Name
+    - Designation
+    - Department
+    - Email
+
+branding:
+  logo_path: "assets/branding/logo.png"
+  signature_path: "assets/branding/signature.png"
+  allowed_extensions: [".png", ".jpg", ".jpeg"]
+  enforce_resolution: false
+  # If enforce_resolution is true, these must match exactly
+  logo_required_px: [600, 250]
+  signature_required_px: [600, 250]
+
+output:
+  root_dir: "output"
+
+pdf:
+  totals_labels:
+    gross_income_label: "GROSS INCOME"
+    total_deduction_label: "TOTAL DEDUCTION"
+    net_pay_label: "NET PAY"
+
+fields:
+  earnings:
+    - label: "Basic Pay"
+      column: "Basic Pay"
+    - label: "Housing"
+      column: "Housing"
+    - label: "Transport"
+      column: "Transport"
+    - label: "Others"
+      column: "Others"
+    - label: "Overtime"
+      column: "Overtime"
+    - label: "Reimbursement"
+      column: "Reimbursement"
+  deductions:
+    - label: "PAYE"
+      column: "PAYE Per Month"
+    - label: "Statutory Pension"
+      column: "Pension"
+    - label: "Others"
+      column: "Loan Deduction"
+
+footer:
+  approved_by_label: "Approved By:"
+  approved_by_name: "Adenike Alabi"
+  signature_gap_mm: 4
+  name_gap_mm: 3
+
+email:
+  enabled: false
+  mode: "display"  # display | send
+  subject_template: "Your Payslip - {period_display}"
+  body_template: |
+    Hi {name},
+
+    Please find attached your payslip for {period_display}.
+
+    Regards,
+    Payroll
