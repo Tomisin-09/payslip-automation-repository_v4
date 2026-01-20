@@ -3,8 +3,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Sequence
+import logging
 
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -30,15 +33,16 @@ def load_employee_payroll_rows(
     """
     xlsx_path = xlsx_path.resolve()
     if not xlsx_path.exists():
+        logger.error(f"Excel data source not found: {xlsx_path}")
         raise FileNotFoundError(f"Excel data source not found: {xlsx_path}")
 
     try:
         df = pd.read_excel(str(xlsx_path), sheet_name=sheet_name, engine="openpyxl")
     except ValueError as e:
-        raise ValueError(
-            f"Could not read sheet '{sheet_name}' from {xlsx_path}. "
+        logger.error(e, f"Could not read sheet '{sheet_name}' from {xlsx_path}. "
             "Check the sheet name in config."
-        ) from e
+        )
+        raise
 
     if df is None or df.empty:
         raise ValueError(f"No rows found in '{sheet_name}' sheet of {xlsx_path}")
@@ -50,10 +54,10 @@ def load_employee_payroll_rows(
     if missing_base or missing_vals:
         msg = "Missing required columns in Excel data source."
         if missing_base:
-            msg += f"\n- Missing base columns: {missing_base}"
+            logger.error(f"{msg} \n- Missing base columns: {missing_base}")
         if missing_vals:
-            msg += f"\n- Missing payroll value columns: {missing_vals}"
-        msg += f"\n\nAvailable columns: {list(df.columns)}"
+            logger.error(f"{msg} \n- Missing payroll value columns: {missing_vals}")
+        logger.info(f"{msg} \nAvailable columns: {list(df.columns)}")
         raise ValueError(msg)
 
     # Drop rows that have no Reference Number
@@ -75,6 +79,7 @@ def load_employee_payroll_rows(
         )
 
     if not rows:
-        raise ValueError("No valid employees found (after filtering empty Reference Number)")
+        logger.error("No valid employees found (after filtering empty Reference Number)")
+        raise ValueError
 
     return rows
