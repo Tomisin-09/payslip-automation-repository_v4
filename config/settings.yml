@@ -1,5 +1,5 @@
 run:
-  period_mode: "manual"
+  period_mode: "auto_current_month" # Options - auto_previous_month,  auto_current_month, manual
   manual_period:
     year: 2026
     month: 1
