@@ -59,6 +59,8 @@ fields:
       column: "PAYE Per Month"
     - label: "Statutory Pension"
       column: "Pension"
+    - label: "Leave Allowance"
+      column: "Leave Allowance"
     - label: "Others"
       column: "Loan Deduction"
 
